@@ -18,9 +18,7 @@ manifest:
       remote: englmaxi
       revision: v0.3
     # nice_oled - nice_epaper
-    - name: zmk-nice-oled
-      remote: mctechnology17
-      revision: main
+    # (Removed zmk-nice-oled because it was moved locally to boards/shields/nice_oled)
     # dongle_display!view
     - name: zmk-dongle-display-view
       remote: mctechnology17
