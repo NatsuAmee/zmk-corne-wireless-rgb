@@ -57,41 +57,41 @@ include:
   ### CORNE START ###
     ### nice_view START ###
     # nice_nano_v2 + nice_epaper
-  - board: nice_nano_v2
-    shield: corne_left nice_view_adapter nice_epaper
-    cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Nice_Corne_View\"
-    artifact-name: nice_corne_left_view
-    snippet: studio-rpc-usb-uart
-  - board: nice_nano_v2
-    shield: corne_right nice_view_adapter nice_epaper
-    artifact-name: nice_corne_right_view
+#   - board: nice_nano_v2
+#     shield: corne_left nice_view_adapter nice_epaper
+#     cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Nice_Corne_View\"
+#     artifact-name: nice_corne_left_view
+#     snippet: studio-rpc-usb-uart
+#   - board: nice_nano_v2
+#     shield: corne_right nice_view_adapter nice_epaper
+#     artifact-name: nice_corne_right_view
 
     # puchi_ble_v1 + nice_epaper
 
     # peripheral_left + nice_nano_v2 + nice_epaper
-  - board: nice_nano_v2
-    shield: corne_left_peripheral nice_view_adapter nice_epaper
-    artifact-name: nice_corne_left_peripheral_view
+#   - board: nice_nano_v2
+#     shield: corne_left_peripheral nice_view_adapter nice_epaper
+#     artifact-name: nice_corne_left_peripheral_view
 
     # peripheral_left + puchi_ble_v1 + nice_epaper
     ### nice_view END ###
 
     ### nice_oled START ###
     # nice_nano_v2 + nice_oled
-  - board: nice_nano_v2
-    shield: corne_left nice_oled
-    cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Nice_Corne_Oled\"
-    artifact-name: nice_corne_left_oled
-    snippet: studio-rpc-usb-uart
-  - board: nice_nano_v2
-    shield: corne_right nice_oled
-    artifact-name: nice_corne_right_oled
+#   - board: nice_nano_v2
+#     shield: corne_left nice_oled
+#     cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Nice_Corne_Oled\"
+#     artifact-name: nice_corne_left_oled
+#     snippet: studio-rpc-usb-uart
+#   - board: nice_nano_v2
+#     shield: corne_right nice_oled
+#     artifact-name: nice_corne_right_oled
 
     # puchi_ble_v1 + nice_oled
     # peripheral_left + nice_nano_v2 + nice_oled
-  - board: nice_nano_v2
-    shield: corne_left_peripheral nice_oled
-    artifact-name: nice_corne_left_peripheral_oled
+#   - board: nice_nano_v2
+#     shield: corne_left_peripheral nice_oled
+#     artifact-name: nice_corne_left_peripheral_oled
 
     # peripheral_left + puchi_ble_v1 + nice_oled
   
@@ -103,21 +103,21 @@ include:
 
     ### ProMicro_Dongle START ###
     # nice_nano_v2 dongle
-  - board: nice_nano_v2
-    shield: corne_dongle_pro_micro
-    cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Nice_Dongle\"
-    artifact-name: nice_corne_dongle_pro_micro
-    snippet: studio-rpc-usb-uart
-    # snippet: zmk-usb-logging
-  - board: nice_nano_v2
-    shield: corne_dongle_pro_micro dongle_display
-    # cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Nice_Dongle_O\"
-    artifact-name: nice_corne_dongle_oled
-    snippet: studio-rpc-usb-uart
-    # snippet: zmk-usb-logging
-    # snippet: zmk-usb-logging
-    # snippet: zmk-usb-logging
-    ### Pro Micro END ###
+#   - board: nice_nano_v2
+#     shield: corne_dongle_pro_micro
+#     cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Nice_Dongle\"
+#     artifact-name: nice_corne_dongle_pro_micro
+#     snippet: studio-rpc-usb-uart
+#     # snippet: zmk-usb-logging
+#   - board: nice_nano_v2
+#     shield: corne_dongle_pro_micro dongle_display
+#     # cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Nice_Dongle_O\"
+#     artifact-name: nice_corne_dongle_oled
+#     snippet: studio-rpc-usb-uart
+#     # snippet: zmk-usb-logging
+#     # snippet: zmk-usb-logging
+#     # snippet: zmk-usb-logging
+#     ### Pro Micro END ###
 
     ### ProMicro_Dongle START ###
     # NICE x PUCHI and nice_oled + rgb
@@ -126,11 +126,11 @@ include:
     cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Corne_Oled_RGB\"
     artifact-name: nice_corne_left_oled_rgb
     snippet: rgb-config studio-rpc-usb-uart
-  - board: nice_nano_v2
-    shield: corne_right nice_oled
-    cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Corne_Oled_RGB\"
-    artifact-name: nice_corne_right_oled_rgb
-    snippet: rgb-config studio-rpc-usb-uart
+#   - board: nice_nano_v2
+#     shield: corne_right nice_oled
+#     cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Corne_Oled_RGB\"
+#     artifact-name: nice_corne_right_oled_rgb
+#     snippet: rgb-config studio-rpc-usb-uart
     
     
     ### Pro Micro END ###
@@ -138,31 +138,31 @@ include:
 
   ### SOFLEV2 SOFLEV1 SOFLEPLUS START ###
   # nice!oled sofle
-  - board: nice_nano_v2
-    shield: sofle_left nice_oled
-    cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Sofle_Oled\"  -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_SLEEP=y -DCONFIG_ZMK_IDLE_TIMEOUT=60000
-    artifact-name: nice_sofle_left_oled
-    snippet: studio-rpc-usb-uart
-  - board: nice_nano_v2
-    shield: sofle_right nice_oled
-    cmake-args: -DCONFIG_ZMK_SLEEP=y -DCONFIG_ZMK_IDLE_TIMEOUT=60000
-    artifact-name: nice_sofle_right_oled
+#   - board: nice_nano_v2
+#     shield: sofle_left nice_oled
+#     cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Sofle_Oled\"  -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_SLEEP=y -DCONFIG_ZMK_IDLE_TIMEOUT=60000
+#     artifact-name: nice_sofle_left_oled
+#     snippet: studio-rpc-usb-uart
+#   - board: nice_nano_v2
+#     shield: sofle_right nice_oled
+#     cmake-args: -DCONFIG_ZMK_SLEEP=y -DCONFIG_ZMK_IDLE_TIMEOUT=60000
+#     artifact-name: nice_sofle_right_oled
 
   # peripheral_left
-  - board: nice_nano_v2
-    shield: sofle_left_peripheral nice_oled
-    cmake-args: -DCONFIG_ZMK_SLEEP=y -DCONFIG_ZMK_IDLE_TIMEOUT=60000
-    artifact-name: nice_sofle_left_peripheral_oled
+#   - board: nice_nano_v2
+#     shield: sofle_left_peripheral nice_oled
+#     cmake-args: -DCONFIG_ZMK_SLEEP=y -DCONFIG_ZMK_IDLE_TIMEOUT=60000
+#     artifact-name: nice_sofle_left_peripheral_oled
 
   
 
   # ProMicro_Dongle
-  - board: nice_nano_v2
-    shield: sofle_dongle_pro_micro dongle_display
-    cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"SofleDongle_P\"  -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_SLEEP=n -DCONFIG_ZMK_IDLE_TIMEOUT=60000
-    artifact-name: nice_sofle_dongle_oled
-    snippet: studio-rpc-usb-uart
-  ### SOFLEV2 SOFLEV1 SOFLEPLUS END ###
+#   - board: nice_nano_v2
+#     shield: sofle_dongle_pro_micro dongle_display
+#     cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"SofleDongle_P\"  -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_SLEEP=n -DCONFIG_ZMK_IDLE_TIMEOUT=60000
+#     artifact-name: nice_sofle_dongle_oled
+#     snippet: studio-rpc-usb-uart
+#   ### SOFLEV2 SOFLEV1 SOFLEPLUS END ###
 
  
 
@@ -173,34 +173,34 @@ include:
 
   ### SPLITKB AURORA SOFLE START ###
   # nice!oled splitkb_aurora_sofle
-  - board: nice_nano_v2
-    shield: splitkb_aurora_sofle_left nice_oled
-    cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"A_Sofle_Oled\"  -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_SLEEP=y -DCONFIG_ZMK_IDLE_TIMEOUT=60000
-    artifact-name: nice_splitkb_aurora_sofle_left_oled
-    snippet: studio-rpc-usb-uart
-  - board: nice_nano_v2
-    shield: splitkb_aurora_sofle_right nice_oled
-    cmake-args: -DCONFIG_ZMK_SLEEP=y -DCONFIG_ZMK_IDLE_TIMEOUT=60000
-    artifact-name: nice_splitkb_aurora_sofle_right_oled
+#   - board: nice_nano_v2
+#     shield: splitkb_aurora_sofle_left nice_oled
+#     cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"A_Sofle_Oled\"  -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_SLEEP=y -DCONFIG_ZMK_IDLE_TIMEOUT=60000
+#     artifact-name: nice_splitkb_aurora_sofle_left_oled
+#     snippet: studio-rpc-usb-uart
+#   - board: nice_nano_v2
+#     shield: splitkb_aurora_sofle_right nice_oled
+#     cmake-args: -DCONFIG_ZMK_SLEEP=y -DCONFIG_ZMK_IDLE_TIMEOUT=60000
+#     artifact-name: nice_splitkb_aurora_sofle_right_oled
 
   # peripheral_left
-  - board: nice_nano_v2
-    shield: splitkb_aurora_sofle_left_peripheral nice_oled
-    cmake-args: -DCONFIG_ZMK_SLEEP=y -DCONFIG_ZMK_IDLE_TIMEOUT=60000
-    artifact-name: nice_splitkb_aurora_sofle_left_peripheral_oled
+#   - board: nice_nano_v2
+#     shield: splitkb_aurora_sofle_left_peripheral nice_oled
+#     cmake-args: -DCONFIG_ZMK_SLEEP=y -DCONFIG_ZMK_IDLE_TIMEOUT=60000
+#     artifact-name: nice_splitkb_aurora_sofle_left_peripheral_oled
 
 
   # ProMicro_Dongle
-  - board: nice_nano_v2
-    shield: splitkb_aurora_sofle_dongle_pro_micro dongle_display
-    cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"A_SofleDongle_P\"  -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_SLEEP=n -DCONFIG_ZMK_IDLE_TIMEOUT=60000
-    artifact-name: nice_splitkb_aurora_sofle_dongle_oled
-    snippet: studio-rpc-usb-uart
-  ### SPLITKB AURORA SOFLE END ###
+#   - board: nice_nano_v2
+#     shield: splitkb_aurora_sofle_dongle_pro_micro dongle_display
+#     cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"A_SofleDongle_P\"  -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_SLEEP=n -DCONFIG_ZMK_IDLE_TIMEOUT=60000
+#     artifact-name: nice_splitkb_aurora_sofle_dongle_oled
+#     snippet: studio-rpc-usb-uart
+#   ### SPLITKB AURORA SOFLE END ###
 
   ### SETTINGS_RESET START ###
-  - board: nice_nano_v2
-    shield: settings_reset
-    artifact-name: nice_settings_reset
+#   - board: nice_nano_v2
+#     shield: settings_reset
+#     artifact-name: nice_settings_reset
 
   ### SETTINGS_RESET END ###
