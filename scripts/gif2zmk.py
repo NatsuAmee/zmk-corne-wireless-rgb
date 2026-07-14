@@ -72,7 +72,7 @@ def image_to_lvgl_1bit(img, name, frame_idx):
 """
     return c_array + c_struct
 
-def process_gif(input_path, output_name, target_w, target_h, rotate, outdir, threshold=None, edge_detect=False):
+def process_gif(input_path, output_name, target_w, target_h, rotate, outdir, threshold=None, edge_detect=False, skip_frames=0):
     try:
         gif = Image.open(input_path)
     except Exception as e:
@@ -91,8 +91,17 @@ def process_gif(input_path, output_name, target_w, target_h, rotate, outdir, thr
             bg.paste(frame, mask=frame.split()[3])
             frame = bg.convert('RGB')
             
-            # Resize
-            frame = frame.resize((target_w, target_h), Image.Resampling.LANCZOS)
+            # Resize (contain style: preserve aspect ratio, pad with white)
+            img_w, img_h = frame.size
+            ratio = min(target_w / img_w, target_h / img_h)
+            new_w = max(1, int(img_w * ratio))
+            new_h = max(1, int(img_h * ratio))
+            frame = frame.resize((new_w, new_h), Image.Resampling.LANCZOS)
+            
+            # Create a target canvas and paste the resized frame in the center
+            new_frame = Image.new('RGB', (target_w, target_h), (255, 255, 255))
+            new_frame.paste(frame, ((target_w - new_w) // 2, (target_h - new_h) // 2))
+            frame = new_frame
             
             # Rotate if needed (expand=True to swap width/height correctly on 90/270 deg)
             if rotate != 0:
@@ -116,7 +125,9 @@ def process_gif(input_path, output_name, target_w, target_h, rotate, outdir, thr
                 
             frames.append(frame)
             
-            gif.seek(gif.tell() + 1)
+            # Skip frames if requested
+            for _ in range(skip_frames + 1):
+                gif.seek(gif.tell() + 1)
     except EOFError:
         pass
 
@@ -166,12 +177,14 @@ if __name__ == "__main__":
     parser.add_argument("input_gif", help="Path to input GIF file")
     parser.add_argument("--name", default=None, help="Output C variable name (defaults to input filename)")
     parser.add_argument("--outdir", default=None, help="Output directory (defaults to animations/outputs)")
-    parser.add_argument("--width", type=int, default=160, help="Target width BEFORE rotation (default: 160)")
-    parser.add_argument("--height", type=int, default=68, help="Target height BEFORE rotation (default: 68)")
+    parser.add_argument("--width", type=int, default=32, help="Target width BEFORE rotation (default: 32)")
+    parser.add_argument("--height", type=int, default=32, help="Target height BEFORE rotation (default: 32)")
     parser.add_argument("--rotate", type=int, default=90, help="Rotation degrees (clockwise): 0, 90, 180, 270 (default: 90)")
     parser.add_argument("--threshold", type=int, default=128, help="Threshold level (0-255) for solid black outlines instead of dithering. (default: 128)")
     parser.add_argument("--dither", action="store_true", help="Use dithering instead of thresholding (best for gradients/photos)")
     parser.add_argument("--edge-detect", action="store_true", help="Apply edge detection to force an outline sketch effect")
+    parser.add_argument("--scale", type=float, default=1.0, help="Scale factor to reduce output size (e.g. 0.5 for half size).")
+    parser.add_argument("--skip-frames", type=int, default=0, help="Number of frames to skip between each kept frame (e.g. 1 to keep every other frame).")
     
     args = parser.parse_args()
     
@@ -190,5 +203,9 @@ if __name__ == "__main__":
         
     # Determine processing mode
     threshold = None if args.dither else args.threshold
+    
+    # Apply scale
+    target_w = int(args.width * args.scale)
+    target_h = int(args.height * args.scale)
         
-    process_gif(args.input_gif, name, args.width, args.height, args.rotate, outdir, threshold, args.edge_detect)
+    process_gif(args.input_gif, name, target_w, target_h, args.rotate, outdir, threshold, args.edge_detect, args.skip_frames)

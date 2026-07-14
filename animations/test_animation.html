@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,18 +15,21 @@
             align-items: center;
             padding: 40px;
         }
+
         .container {
             background: #2a2a2a;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             text-align: center;
             max-width: 500px;
             width: 100%;
         }
+
         input[type="file"] {
             display: none;
         }
+
         .file-upload {
             background: #4a90e2;
             color: white;
@@ -37,9 +41,11 @@
             margin-bottom: 20px;
             transition: background 0.3s;
         }
+
         .file-upload:hover {
             background: #357abd;
         }
+
         .canvas-container {
             margin: 20px auto;
             background: #000;
@@ -47,173 +53,213 @@
             border-radius: 8px;
             display: inline-block;
         }
+
         canvas {
-            background: #000; /* OLED default background */
+            background: #000;
+            /* OLED default background */
             display: block;
         }
+
         .controls {
             margin-top: 20px;
         }
+
+        .controls label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        .slider {
+            width: 100%;
+        }
+
         .fps-slider {
             width: 100%;
             margin-top: 10px;
         }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    <h2>LVGL Animation Tester</h2>
-    <p>Select your generated <code>custom_anim.c</code> file to preview it.</p>
-    
-    <label class="file-upload">
-        Choose .c file
-        <input type="file" id="fileInput" accept=".c" />
-    </label>
-    
-    <div class="canvas-container">
-        <canvas id="animCanvas"></canvas>
+    <div class="container">
+        <h2>LVGL Animation Tester</h2>
+        <p>Select your generated <code>custom_anim.c</code> file to preview it.</p>
+
+        <label class="file-upload">
+            Choose .c file
+            <input type="file" id="fileInput" accept=".c" />
+        </label>
+
+        <div class="canvas-container">
+            <canvas id="animCanvas"></canvas>
+        </div>
+
+        <div class="controls">
+            <label for="zoom">Zoom: <span id="zoomValue">4</span>x</label>
+            <input type="range" id="zoom" class="slider" min="1" max="10" value="4">
+
+            <label for="fps">Playback Speed: <span id="fpsValue">15</span> FPS</label>
+            <input type="range" id="fps" class="slider fps-slider" min="1" max="60" value="15">
+        </div>
+        <div id="status">Waiting for file...</div>
     </div>
-    
-    <div class="controls">
-        <label for="fps">Playback Speed: <span id="fpsValue">15</span> FPS</label>
-        <input type="range" id="fps" class="fps-slider" min="1" max="60" value="15">
-    </div>
-    <div id="status">Waiting for file...</div>
-</div>
 
-<script>
-    const fileInput = document.getElementById('fileInput');
-    const canvas = document.getElementById('animCanvas');
-    const ctx = canvas.getContext('2d');
-    const status = document.getElementById('status');
-    const fpsSlider = document.getElementById('fps');
-    const fpsValue = document.getElementById('fpsValue');
-    
-    let frames = [];
-    let currentFrame = 0;
-    let animationId = null;
-    let lastDrawTime = 0;
-    let fps = 15;
-    
-    fpsSlider.addEventListener('input', (e) => {
-        fps = parseInt(e.target.value);
-        fpsValue.textContent = fps;
-    });
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const canvas = document.getElementById('animCanvas');
+        const ctx = canvas.getContext('2d');
+        const status = document.getElementById('status');
+        const fpsSlider = document.getElementById('fps');
+        const fpsValue = document.getElementById('fpsValue');
+        const zoomSlider = document.getElementById('zoom');
+        const zoomValue = document.getElementById('zoomValue');
 
-    fileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        
-        status.textContent = "Parsing file...";
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-            const content = evt.target.result;
-            parseFile(content);
-        };
-        reader.readAsText(file);
-    });
+        let frames = [];
+        let currentFrame = 0;
+        let animationId = null;
+        let lastDrawTime = 0;
+        let fps = 15;
+        let zoom = 4;
+        let baseWidth = 0;
+        let baseHeight = 0;
 
-    function parseFile(text) {
-        // Find structs to get dimensions
-        const structRegex = /\.header\.w\s*=\s*(\d+),\s*\.header\.h\s*=\s*(\d+),/g;
-        let match = structRegex.exec(text);
-        
-        if (!match) {
-            status.textContent = "Error: Could not find image dimensions in the struct.";
-            return;
-        }
-        
-        const width = parseInt(match[1]);
-        const height = parseInt(match[2]);
-        
-        canvas.width = width;
-        canvas.height = height;
-        
-        // Find data arrays
-        const dataRegex = /_data\[\]\s*=\s*\{([^}]+)\}/g;
-        frames = [];
-        
-        let dataMatch;
-        while ((dataMatch = dataRegex.exec(text)) !== null) {
-            const dataStr = dataMatch[1];
-            // Extract hex values
-            const hexValues = dataStr.match(/0x[0-9a-fA-F]{2}/g);
-            if (hexValues && hexValues.length > 8) {
-                // First 8 bytes are palette (skip)
-                const pixelBytes = hexValues.slice(8).map(v => parseInt(v, 16));
-                frames.push(pixelBytes);
+        zoomSlider.addEventListener('input', (e) => {
+            zoom = parseInt(e.target.value);
+            zoomValue.textContent = zoom;
+            updateCanvasSize();
+        });
+
+        function updateCanvasSize() {
+            if (baseWidth && baseHeight) {
+                canvas.style.width = (baseWidth * zoom) + 'px';
+                canvas.style.height = (baseHeight * zoom) + 'px';
             }
         }
-        
-        if (frames.length === 0) {
-            status.textContent = "Error: Could not find frame data.";
-            return;
-        }
-        
-        status.textContent = `Loaded ${frames.length} frames (${width}x${height})`;
-        
-        if (animationId) cancelAnimationFrame(animationId);
-        currentFrame = 0;
-        lastDrawTime = performance.now();
-        playAnimation(width, height);
-    }
 
-    function playAnimation(width, height) {
-        function draw(time) {
-            animationId = requestAnimationFrame(draw);
-            
-            const frameDuration = 1000 / fps;
-            if (time - lastDrawTime < frameDuration) return;
-            lastDrawTime = time - (time - lastDrawTime) % frameDuration;
-            
-            renderFrame(frames[currentFrame], width, height);
-            
-            currentFrame = (currentFrame + 1) % frames.length;
-        }
-        animationId = requestAnimationFrame(draw);
-    }
+        fpsSlider.addEventListener('input', (e) => {
+            fps = parseInt(e.target.value);
+            fpsValue.textContent = fps;
+        });
 
-    function renderFrame(pixelBytes, width, height) {
-        const imgData = ctx.createImageData(width, height);
-        
-        let byteIndex = 0;
-        let bitIndex = 0;
-        
-        for (let y = 0; y < height; y++) {
-            byteIndex = Math.floor((y * width) / 8);
-            if (width % 8 !== 0) {
-                // If width is not a multiple of 8, each row still starts on a new byte boundary in LVGL
-                byteIndex = y * Math.ceil(width / 8);
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            status.textContent = "Parsing file...";
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                const content = evt.target.result;
+                parseFile(content);
+            };
+            reader.readAsText(file);
+        });
+
+        function parseFile(text) {
+            // Find structs to get dimensions
+            const structRegex = /\.header\.w\s*=\s*(\d+),\s*\.header\.h\s*=\s*(\d+),/g;
+            let match = structRegex.exec(text);
+
+            if (!match) {
+                status.textContent = "Error: Could not find image dimensions in the struct.";
+                return;
             }
-            
-            bitIndex = 0;
-            
-            for (let x = 0; x < width; x++) {
-                const byte = pixelBytes[byteIndex];
-                const bit = (byte >> (7 - bitIndex)) & 1;
-                
-                const pxIndex = (y * width + x) * 4;
-                
-                // Color: 1 is white, 0 is black
-                const color = bit === 1 ? 255 : 0;
-                
-                imgData.data[pxIndex] = color;     // R
-                imgData.data[pxIndex+1] = color;   // G
-                imgData.data[pxIndex+2] = color;   // B
-                imgData.data[pxIndex+3] = 255;     // A
-                
-                bitIndex++;
-                if (bitIndex === 8) {
-                    bitIndex = 0;
-                    byteIndex++;
+
+            const width = parseInt(match[1]);
+            const height = parseInt(match[2]);
+
+            baseWidth = width;
+            baseHeight = height;
+            canvas.width = width;
+            canvas.height = height;
+            updateCanvasSize();
+
+            // Find data arrays
+            const dataRegex = /_data\[\]\s*=\s*\{([^}]+)\}/g;
+            frames = [];
+
+            let dataMatch;
+            while ((dataMatch = dataRegex.exec(text)) !== null) {
+                const dataStr = dataMatch[1];
+                // Extract hex values
+                const hexValues = dataStr.match(/0x[0-9a-fA-F]{2}/g);
+                if (hexValues && hexValues.length > 8) {
+                    // First 8 bytes are palette (skip)
+                    const pixelBytes = hexValues.slice(8).map(v => parseInt(v, 16));
+                    frames.push(pixelBytes);
                 }
             }
+
+            if (frames.length === 0) {
+                status.textContent = "Error: Could not find frame data.";
+                return;
+            }
+
+            status.textContent = `Loaded ${frames.length} frames (${width}x${height})`;
+
+            if (animationId) cancelAnimationFrame(animationId);
+            currentFrame = 0;
+            lastDrawTime = performance.now();
+            playAnimation(width, height);
         }
-        
-        ctx.putImageData(imgData, 0, 0);
-    }
-</script>
+
+        function playAnimation(width, height) {
+            function draw(time) {
+                animationId = requestAnimationFrame(draw);
+
+                const frameDuration = 1000 / fps;
+                if (time - lastDrawTime < frameDuration) return;
+                lastDrawTime = time - (time - lastDrawTime) % frameDuration;
+
+                renderFrame(frames[currentFrame], width, height);
+
+                currentFrame = (currentFrame + 1) % frames.length;
+            }
+            animationId = requestAnimationFrame(draw);
+        }
+
+        function renderFrame(pixelBytes, width, height) {
+            const imgData = ctx.createImageData(width, height);
+
+            let byteIndex = 0;
+            let bitIndex = 0;
+
+            for (let y = 0; y < height; y++) {
+                byteIndex = Math.floor((y * width) / 8);
+                if (width % 8 !== 0) {
+                    // If width is not a multiple of 8, each row still starts on a new byte boundary in LVGL
+                    byteIndex = y * Math.ceil(width / 8);
+                }
+
+                bitIndex = 0;
+
+                for (let x = 0; x < width; x++) {
+                    const byte = pixelBytes[byteIndex];
+                    const bit = (byte >> (7 - bitIndex)) & 1;
+
+                    const pxIndex = (y * width + x) * 4;
+
+                    // Color: 1 is white, 0 is black
+                    const color = bit === 1 ? 255 : 0;
+
+                    imgData.data[pxIndex] = color;     // R
+                    imgData.data[pxIndex + 1] = color;   // G
+                    imgData.data[pxIndex + 2] = color;   // B
+                    imgData.data[pxIndex + 3] = 255;     // A
+
+                    bitIndex++;
+                    if (bitIndex === 8) {
+                        bitIndex = 0;
+                        byteIndex++;
+                    }
+                }
+            }
+
+            ctx.putImageData(imgData, 0, 0);
+        }
+    </script>
 
 </body>
+
 </html>

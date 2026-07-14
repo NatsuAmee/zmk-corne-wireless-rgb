@@ -14,7 +14,7 @@ def get_frame_count(gif_path):
         print(f"Error opening GIF to count frames: {e}")
         return 0
 
-def run_gif2zmk(name, gif_path, rotate):
+def run_gif2zmk(name, gif_path, rotate, scale, skip_frames):
     print(f"Running gif2zmk.py for '{name}'...")
     script_dir = os.path.dirname(os.path.abspath(__file__))
     gif2zmk_path = os.path.join(script_dir, "gif2zmk.py")
@@ -28,6 +28,11 @@ def run_gif2zmk(name, gif_path, rotate):
         "--rotate", str(rotate),
         "--outdir", outdir
     ]
+    if scale != 1.0:
+        cmd.extend(["--scale", str(scale)])
+    if skip_frames > 0:
+        cmd.extend(["--skip-frames", str(skip_frames)])
+    
     
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
@@ -145,6 +150,8 @@ def main():
     parser.add_argument("--gif", required=True, help="Path to the source GIF")
     parser.add_argument("--duration", type=int, default=960, help="Duration of the animation in ms (default: 960)")
     parser.add_argument("--rotate", type=int, default=90, help="Rotation degrees (default: 90)")
+    parser.add_argument("--scale", type=float, default=1.0, help="Scale factor to reduce output size (e.g. 0.5 for half size).")
+    parser.add_argument("--skip-frames", type=int, default=0, help="Number of frames to skip between each kept frame.")
     
     args = parser.parse_args()
     
@@ -155,7 +162,7 @@ def main():
         print(f"Error: GIF file '{args.gif}' does not exist.")
         sys.exit(1)
         
-    frames = run_gif2zmk(name, args.gif, args.rotate)
+    frames = run_gif2zmk(name, args.gif, args.rotate, args.scale, args.skip_frames)
     if frames == 0:
         print("Failed to determine frame count.")
         sys.exit(1)
