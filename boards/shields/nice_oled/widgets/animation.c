@@ -63,16 +63,16 @@ LV_IMG_DECLARE(cat_7);
 const lv_img_dsc_t *cat_imgs[] = {&cat_0, &cat_1, &cat_2, &cat_3, &cat_4, &cat_5, &cat_6, &cat_7};
 
 #elif IS_ENABLED(CONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_DUDU)
-LV_IMG_DECLARE(dudu_0);
-LV_IMG_DECLARE(dudu_1);
-LV_IMG_DECLARE(dudu_2);
-LV_IMG_DECLARE(dudu_3);
-LV_IMG_DECLARE(dudu_4);
-LV_IMG_DECLARE(dudu_5);
-LV_IMG_DECLARE(dudu_6);
-LV_IMG_DECLARE(dudu_7);
+LV_IMG_DECLARE(dudu_waiting_waiting_for_you_0);
+LV_IMG_DECLARE(dudu_waiting_waiting_for_you_1);
+LV_IMG_DECLARE(dudu_waiting_waiting_for_you_2);
+LV_IMG_DECLARE(dudu_waiting_waiting_for_you_3);
+LV_IMG_DECLARE(dudu_waiting_waiting_for_you_4);
+LV_IMG_DECLARE(dudu_waiting_waiting_for_you_5);
+LV_IMG_DECLARE(dudu_waiting_waiting_for_you_6);
+LV_IMG_DECLARE(dudu_waiting_waiting_for_you_7);
 
-const lv_img_dsc_t *dudu_imgs[] = {&dudu_0, &dudu_1, &dudu_2, &dudu_3, &dudu_4, &dudu_5, &dudu_6, &dudu_7};
+const lv_img_dsc_t *dudu_imgs[] = {&dudu_waiting_waiting_for_you_0, &dudu_waiting_waiting_for_you_1, &dudu_waiting_waiting_for_you_2, &dudu_waiting_waiting_for_you_3, &dudu_waiting_waiting_for_you_4, &dudu_waiting_waiting_for_you_5, &dudu_waiting_waiting_for_you_6, &dudu_waiting_waiting_for_you_7};
 
 #elif IS_ENABLED(CONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_SPACEMAN)
 
