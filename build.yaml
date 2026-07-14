@@ -108,16 +108,16 @@ include:
 #     cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Nice_Dongle\"
 #     artifact-name: nice_corne_dongle_pro_micro
 #     snippet: studio-rpc-usb-uart
-#     # snippet: zmk-usb-logging
+    # snippet: zmk-usb-logging
 #   - board: nice_nano_v2
 #     shield: corne_dongle_pro_micro dongle_display
-#     # cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Nice_Dongle_O\"
+    # cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Nice_Dongle_O\"
 #     artifact-name: nice_corne_dongle_oled
 #     snippet: studio-rpc-usb-uart
-#     # snippet: zmk-usb-logging
-#     # snippet: zmk-usb-logging
-#     # snippet: zmk-usb-logging
-#     ### Pro Micro END ###
+    # snippet: zmk-usb-logging
+    # snippet: zmk-usb-logging
+    # snippet: zmk-usb-logging
+    ### Pro Micro END ###
 
     ### ProMicro_Dongle START ###
     # NICE x PUCHI and nice_oled + rgb
@@ -126,11 +126,11 @@ include:
     cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Corne_Oled_RGB\"
     artifact-name: nice_corne_left_oled_rgb
     snippet: rgb-config studio-rpc-usb-uart
-#   - board: nice_nano_v2
-#     shield: corne_right nice_oled
-#     cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Corne_Oled_RGB\"
-#     artifact-name: nice_corne_right_oled_rgb
-#     snippet: rgb-config studio-rpc-usb-uart
+  - board: nice_nano_v2
+    shield: corne_right nice_oled
+    cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"Corne_Oled_RGB\"
+    artifact-name: nice_corne_right_oled_rgb
+    snippet: rgb-config studio-rpc-usb-uart
     
     
     ### Pro Micro END ###
@@ -162,7 +162,7 @@ include:
 #     cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"SofleDongle_P\"  -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_SLEEP=n -DCONFIG_ZMK_IDLE_TIMEOUT=60000
 #     artifact-name: nice_sofle_dongle_oled
 #     snippet: studio-rpc-usb-uart
-#   ### SOFLEV2 SOFLEV1 SOFLEPLUS END ###
+  ### SOFLEV2 SOFLEV1 SOFLEPLUS END ###
 
  
 
@@ -196,7 +196,7 @@ include:
 #     cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"A_SofleDongle_P\"  -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_SLEEP=n -DCONFIG_ZMK_IDLE_TIMEOUT=60000
 #     artifact-name: nice_splitkb_aurora_sofle_dongle_oled
 #     snippet: studio-rpc-usb-uart
-#   ### SPLITKB AURORA SOFLE END ###
+  ### SPLITKB AURORA SOFLE END ###
 
   ### SETTINGS_RESET START ###
 #   - board: nice_nano_v2
