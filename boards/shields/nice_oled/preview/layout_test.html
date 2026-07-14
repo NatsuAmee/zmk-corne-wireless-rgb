@@ -178,6 +178,28 @@
     </div>
 
     <div class="control-group">
+        <h3>ZMK Core Widgets</h3>
+        <div class="control-row">
+            <label>Connection X:</label>
+            <input type="number" id="conn-x" value="0">
+            <label>Conn Y:</label>
+            <input type="number" id="conn-y" value="0">
+        </div>
+        <div class="control-row">
+            <label>Profile X:</label>
+            <input type="number" id="prof-x" value="0">
+            <label>Profile Y:</label>
+            <input type="number" id="prof-y" value="32">
+        </div>
+        <div class="control-row">
+            <label>Layer X:</label>
+            <input type="number" id="layer-x" value="0">
+            <label>Layer Y:</label>
+            <input type="number" id="layer-y" value="45">
+        </div>
+    </div>
+
+    <div class="control-group">
         <h3>Battery text</h3>
         <div class="checkbox-row">
             <input type="checkbox" id="batt-enabled" checked>
@@ -249,7 +271,6 @@
         
         // Auto alignments based on screen type if not using custom coords
         if (mode.startsWith('vertical')) {
-            baseY = 62;
             if (mode === 'vertical-right') baseX = canvas.width - size - 2;
             else if (mode === 'vertical-center') baseX = (canvas.width - size) / 2;
         }
@@ -334,6 +355,30 @@
         ctx.fillText("Art", ax + 8, ay + 18);
     }
 
+    function drawZmkCore() {
+        ctx.fillStyle = '#fff';
+        ctx.font = '10px monospace';
+        
+        // Connection (BT / USB)
+        const cx = parseInt(document.getElementById('conn-x').value);
+        const cy = parseInt(document.getElementById('conn-y').value);
+        // Draw a fake Bluetooth symbol box
+        ctx.fillRect(cx, cy, 14, 14);
+        ctx.fillStyle = '#000';
+        ctx.fillText("BT", cx + 1, cy + 10);
+        
+        // Profile
+        ctx.fillStyle = '#fff';
+        const px = parseInt(document.getElementById('prof-x').value);
+        const py = parseInt(document.getElementById('prof-y').value);
+        ctx.fillText("1", px, py + 10);
+        
+        // Layer
+        const lx = parseInt(document.getElementById('layer-x').value);
+        const ly = parseInt(document.getElementById('layer-y').value);
+        ctx.fillText("BASE", lx, ly + 10);
+    }
+
     function render() {
         // Handle screen type changes
         const type = document.getElementById('screen-type').value;
@@ -353,6 +398,7 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
         drawGrid();
+        drawZmkCore();
         drawBattery();
         drawModifiers();
         drawHID();
