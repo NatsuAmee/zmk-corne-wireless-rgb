@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZMK nice_oled Layout Tester</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            gap: 30px;
+        }
+        h1, h2, h3 { color: #fff; }
+        .panel {
+            background: #252526;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border: 1px solid #333;
+        }
+        .canvas-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        canvas {
+            background-color: #000;
+            border: 2px solid #555;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            /* Scale up for better visibility */
+            transform-origin: top center;
+            transform: scale(2.5);
+            margin-top: 20px;
+            margin-bottom: 250px; /* Space for the scaled canvas */
+            image-rendering: pixelated;
+        }
+        .controls {
+            flex-grow: 1;
+            max-width: 600px;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        .control-group {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
+        }
+        .control-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        label {
+            width: 120px;
+            font-size: 14px;
+        }
+        input[type="number"] {
+            width: 60px;
+            background: #3c3c3c;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 4px;
+            border-radius: 4px;
+        }
+        select {
+            background: #3c3c3c;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 4px;
+            border-radius: 4px;
+        }
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+        button {
+            background: #007acc;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background: #0098ff; }
+    </style>
+</head>
+<body>
+
+<div class="panel canvas-container">
+    <h2>Display Preview</h2>
+    <div class="control-row" style="justify-content: center; margin-bottom: 20px;">
+        <label for="screen-type">Screen Type:</label>
+        <select id="screen-type">
+            <option value="oled-vertical">OLED 32x128 (Vertical)</option>
+            <option value="epaper-vertical">nice!view 68x160 (Vertical)</option>
+            <option value="oled-horizontal">OLED 128x32 (Horizontal)</option>
+        </select>
+    </div>
+    <canvas id="display-canvas" width="32" height="128"></canvas>
+    <p style="margin-top: 180px; text-align: center; color: #888;">
+        Coordinates start from top-left (0,0).<br>
+        Grid is pixel-perfect to actual screen size.
+    </p>
+</div>
+
+<div class="panel controls">
+    <h2>Widget Configuration</h2>
+    
+    <div class="control-group">
+        <h3>Modifiers Indicators (Fixed)</h3>
+        <div class="checkbox-row">
+            <input type="checkbox" id="mods-enabled" checked>
+            <label for="mods-enabled">Enabled</label>
+        </div>
+        <div class="control-row">
+            <label>Mode:</label>
+            <select id="mods-mode">
+                <option value="box">Box (2x2)</option>
+                <option value="horizontal">Horizontal</option>
+                <option value="vertical-left">Vertical Left</option>
+                <option value="vertical-right">Vertical Right</option>
+                <option value="vertical-center">Vertical Center</option>
+            </select>
+        </div>
+        <div class="control-row">
+            <label>Custom X:</label>
+            <input type="number" id="mods-x" value="0">
+            <label>Custom Y:</label>
+            <input type="number" id="mods-y" value="0">
+        </div>
+        <div class="checkbox-row">
+            <input type="checkbox" id="mods-symbol" checked>
+            <label for="mods-symbol">Use Symbols (Images)</label>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <h3>Raw HID Widgets</h3>
+        <div class="checkbox-row">
+            <input type="checkbox" id="hid-enabled" checked>
+            <label for="hid-enabled">Enabled</label>
+        </div>
+        
+        <div class="control-row">
+            <label>Time X:</label>
+            <input type="number" id="time-x" value="0">
+            <label>Time Y:</label>
+            <input type="number" id="time-y" value="0">
+        </div>
+        
+        <div class="control-row">
+            <label>Weather X:</label>
+            <input type="number" id="weather-x" value="0">
+            <label>Weather Y:</label>
+            <input type="number" id="weather-y" value="15">
+        </div>
+        
+        <div class="control-row">
+            <label>Volume X:</label>
+            <input type="number" id="volume-x" value="0">
+            <label>Volume Y:</label>
+            <input type="number" id="volume-y" value="30">
+        </div>
+        
+        <div class="control-row">
+            <label>Layout X:</label>
+            <input type="number" id="layout-x" value="0">
+            <label>Layout Y:</label>
+            <input type="number" id="layout-y" value="45">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <h3>Battery text</h3>
+        <div class="checkbox-row">
+            <input type="checkbox" id="batt-enabled" checked>
+            <label for="batt-enabled">Enabled</label>
+        </div>
+        <div class="control-row">
+            <label>X:</label>
+            <input type="number" id="batt-x" value="0">
+            <label>Y:</label>
+            <input type="number" id="batt-y" value="19">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <h3>Art (Bongo/Luna)</h3>
+        <div class="checkbox-row">
+            <input type="checkbox" id="art-enabled" checked>
+            <label for="art-enabled">Enabled (Placeholder)</label>
+        </div>
+        <div class="control-row">
+            <label>X:</label>
+            <input type="number" id="art-x" value="0">
+            <label>Y:</label>
+            <input type="number" id="art-y" value="80">
+        </div>
+    </div>
+
+    <button id="reset-btn">Reset Defaults</button>
+</div>
+
+<script>
+    const canvas = document.getElementById('display-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    const inputs = document.querySelectorAll('input, select');
+    
+    function drawGrid() {
+        ctx.strokeStyle = '#222';
+        ctx.lineWidth = 1;
+        
+        for (let x = 0; x <= canvas.width; x += 10) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, canvas.height);
+            ctx.stroke();
+        }
+        for (let y = 0; y <= canvas.height; y += 10) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(canvas.width, y);
+            ctx.stroke();
+        }
+    }
+
+    function drawModifiers() {
+        if (!document.getElementById('mods-enabled').checked) return;
+        
+        const mode = document.getElementById('mods-mode').value;
+        const useSymbol = document.getElementById('mods-symbol').checked;
+        let baseX = parseInt(document.getElementById('mods-x').value);
+        let baseY = parseInt(document.getElementById('mods-y').value);
+        
+        ctx.fillStyle = '#fff';
+        ctx.font = '8px monospace';
+        
+        const size = useSymbol ? 14 : 12;
+        const spacing = 2;
+        const items = ['C', 'S', 'A', 'W'];
+        
+        // Auto alignments based on screen type if not using custom coords
+        if (mode.startsWith('vertical')) {
+            baseY = 62;
+            if (mode === 'vertical-right') baseX = canvas.width - size - 2;
+            else if (mode === 'vertical-center') baseX = (canvas.width - size) / 2;
+        }
+
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 1;
+
+        for (let i = 0; i < 4; i++) {
+            let cx = baseX;
+            let cy = baseY;
+            
+            if (mode === 'box') {
+                const offsets = [[0,0], [size+spacing, 0], [0, size+spacing], [size+spacing, size+spacing]];
+                cx += offsets[i][0];
+                cy += offsets[i][1];
+            } else if (mode === 'horizontal') {
+                cx += i * (size + spacing);
+            } else {
+                // vertical
+                cy += i * (size + spacing);
+            }
+            
+            // Draw box outline
+            ctx.strokeRect(cx, cy, size, size);
+            
+            // Fill 2 of them to simulate active state
+            if (i === 1 || i === 3) {
+                ctx.fillRect(cx, cy, size, size);
+                ctx.fillStyle = '#000';
+            } else {
+                ctx.fillStyle = '#fff';
+            }
+            
+            ctx.fillText(items[i], cx + 3, cy + 9);
+        }
+    }
+
+    function drawHID() {
+        if (!document.getElementById('hid-enabled').checked) return;
+        
+        ctx.fillStyle = '#fff';
+        ctx.font = '10px monospace';
+        
+        const tx = parseInt(document.getElementById('time-x').value);
+        const ty = parseInt(document.getElementById('time-y').value);
+        ctx.fillText("12:34", tx, ty + 10);
+        
+        const wx = parseInt(document.getElementById('weather-x').value);
+        const wy = parseInt(document.getElementById('weather-y').value);
+        ctx.fillText("24C", wx, wy + 10);
+        
+        const vx = parseInt(document.getElementById('volume-x').value);
+        const vy = parseInt(document.getElementById('volume-y').value);
+        ctx.fillText("Vol:50", vx, vy + 10);
+        
+        const lx = parseInt(document.getElementById('layout-x').value);
+        const ly = parseInt(document.getElementById('layout-y').value);
+        ctx.fillText("QWERTY", lx, ly + 10);
+    }
+    
+    function drawBattery() {
+        if (!document.getElementById('batt-enabled').checked) return;
+        ctx.fillStyle = '#fff';
+        ctx.font = '8px monospace';
+        const bx = parseInt(document.getElementById('batt-x').value);
+        const by = parseInt(document.getElementById('batt-y').value);
+        ctx.fillText("100 80", bx, by + 8);
+    }
+
+    function drawArt() {
+        if (!document.getElementById('art-enabled').checked) return;
+        const ax = parseInt(document.getElementById('art-x').value);
+        const ay = parseInt(document.getElementById('art-y').value);
+        
+        ctx.strokeStyle = '#fff';
+        ctx.setLineDash([2, 2]);
+        ctx.strokeRect(ax, ay, 32, 32);
+        ctx.setLineDash([]);
+        
+        ctx.fillStyle = '#fff';
+        ctx.font = '8px monospace';
+        ctx.fillText("Art", ax + 8, ay + 18);
+    }
+
+    function render() {
+        // Handle screen type changes
+        const type = document.getElementById('screen-type').value;
+        if (type === 'oled-vertical') {
+            canvas.width = 32;
+            canvas.height = 128;
+        } else if (type === 'epaper-vertical') {
+            canvas.width = 68;
+            canvas.height = 160;
+        } else {
+            canvas.width = 128;
+            canvas.height = 32;
+        }
+
+        // Clear canvas
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        drawGrid();
+        drawBattery();
+        drawModifiers();
+        drawHID();
+        drawArt();
+    }
+
+    inputs.forEach(input => {
+        input.addEventListener('input', render);
+        input.addEventListener('change', render);
+    });
+    
+    document.getElementById('reset-btn').addEventListener('click', () => {
+        document.getElementById('screen-type').value = 'oled-vertical';
+        document.getElementById('mods-mode').value = 'box';
+        document.getElementById('mods-x').value = '0';
+        document.getElementById('mods-y').value = '0';
+        // reset others as needed
+        render();
+    });
+
+    // Initial render
+    render();
+</script>
+
+</body>
+</html>
