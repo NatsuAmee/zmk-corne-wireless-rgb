@@ -1,4 +1,4 @@
-#include "dudu_waiting_waiting_for_you.h"
+#include "dudu.h"
 
 const uint8_t dudu_waiting_waiting_for_you_0_data[] = {
     /*Palette*/
