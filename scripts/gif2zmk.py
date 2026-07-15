@@ -72,7 +72,7 @@ def image_to_lvgl_1bit(img, name, frame_idx):
 """
     return c_array + c_struct
 
-def process_gif(input_path, output_name, target_w, target_h, rotate, outdir, threshold=None, edge_detect=False, skip_frames=0):
+def process_gif(input_path, output_name, target_w, target_h, rotate, outdir, threshold=None, edge_detect=False, skip_frames=0, resample_method=Image.Resampling.LANCZOS):
     try:
         gif = Image.open(input_path)
     except Exception as e:
@@ -96,7 +96,7 @@ def process_gif(input_path, output_name, target_w, target_h, rotate, outdir, thr
             ratio = min(target_w / img_w, target_h / img_h)
             new_w = max(1, int(img_w * ratio))
             new_h = max(1, int(img_h * ratio))
-            frame = frame.resize((new_w, new_h), Image.Resampling.LANCZOS)
+            frame = frame.resize((new_w, new_h), resample_method)
             
             # Create a target canvas and paste the resized frame in the center
             new_frame = Image.new('RGB', (target_w, target_h), (255, 255, 255))
@@ -185,6 +185,7 @@ if __name__ == "__main__":
     parser.add_argument("--edge-detect", action="store_true", help="Apply edge detection to force an outline sketch effect")
     parser.add_argument("--scale", type=float, default=1.0, help="Scale factor to reduce output size (e.g. 0.5 for half size).")
     parser.add_argument("--skip-frames", type=int, default=0, help="Number of frames to skip between each kept frame (e.g. 1 to keep every other frame).")
+    parser.add_argument("--resample", type=str, default="lanczos", choices=["lanczos", "nearest", "bicubic", "box", "bilinear", "hamming"], help="Resampling method to use for scaling (default: lanczos)")
     
     args = parser.parse_args()
     
@@ -204,8 +205,19 @@ if __name__ == "__main__":
     # Determine processing mode
     threshold = None if args.dither else args.threshold
     
+    # Map resample string to PIL Resampling enum
+    resampling_methods = {
+        "lanczos": Image.Resampling.LANCZOS,
+        "nearest": Image.Resampling.NEAREST,
+        "bicubic": Image.Resampling.BICUBIC,
+        "box": Image.Resampling.BOX,
+        "bilinear": Image.Resampling.BILINEAR,
+        "hamming": Image.Resampling.HAMMING
+    }
+    resample_method = resampling_methods[args.resample]
+    
     # Apply scale
     target_w = int(args.width * args.scale)
     target_h = int(args.height * args.scale)
         
-    process_gif(args.input_gif, name, target_w, target_h, args.rotate, outdir, threshold, args.edge_detect, args.skip_frames)
+    process_gif(args.input_gif, name, target_w, target_h, args.rotate, outdir, threshold, args.edge_detect, args.skip_frames, resample_method)

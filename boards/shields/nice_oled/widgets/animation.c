@@ -63,16 +63,18 @@ LV_IMG_DECLARE(cat_7);
 const lv_img_dsc_t *cat_imgs[] = {&cat_0, &cat_1, &cat_2, &cat_3, &cat_4, &cat_5, &cat_6, &cat_7};
 
 #elif IS_ENABLED(CONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_DUDU)
-LV_IMG_DECLARE(dudu_waiting_waiting_for_you_0);
-LV_IMG_DECLARE(dudu_waiting_waiting_for_you_1);
-LV_IMG_DECLARE(dudu_waiting_waiting_for_you_2);
-LV_IMG_DECLARE(dudu_waiting_waiting_for_you_3);
-LV_IMG_DECLARE(dudu_waiting_waiting_for_you_4);
-LV_IMG_DECLARE(dudu_waiting_waiting_for_you_5);
-LV_IMG_DECLARE(dudu_waiting_waiting_for_you_6);
-LV_IMG_DECLARE(dudu_waiting_waiting_for_you_7);
+LV_IMG_DECLARE(doraemon_crunch_0);
+LV_IMG_DECLARE(doraemon_crunch_1);
+LV_IMG_DECLARE(doraemon_crunch_2);
+LV_IMG_DECLARE(doraemon_crunch_3);
+LV_IMG_DECLARE(doraemon_crunch_4);
+LV_IMG_DECLARE(doraemon_crunch_5);
+LV_IMG_DECLARE(doraemon_crunch_6);
+LV_IMG_DECLARE(doraemon_crunch_7);
+LV_IMG_DECLARE(doraemon_crunch_8);
+LV_IMG_DECLARE(doraemon_crunch_9);
 
-const lv_img_dsc_t *dudu_imgs[] = {&dudu_waiting_waiting_for_you_0, &dudu_waiting_waiting_for_you_1, &dudu_waiting_waiting_for_you_2, &dudu_waiting_waiting_for_you_3, &dudu_waiting_waiting_for_you_4, &dudu_waiting_waiting_for_you_5, &dudu_waiting_waiting_for_you_6, &dudu_waiting_waiting_for_you_7};
+const lv_img_dsc_t *dudu_imgs[] = {&doraemon_crunch_0, &doraemon_crunch_1, &doraemon_crunch_2, &doraemon_crunch_3, &doraemon_crunch_4, &doraemon_crunch_5, &doraemon_crunch_6, &doraemon_crunch_7, &doraemon_crunch_8, &doraemon_crunch_9};
 
 #elif IS_ENABLED(CONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_SPACEMAN)
 
@@ -195,7 +197,7 @@ void draw_animation(lv_obj_t *canvas, struct zmk_widget_screen *widget) {
 #elif IS_ENABLED(CONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_CAT)
     lv_animimg_set_src(art, (const void **)cat_imgs, 8);
 #elif IS_ENABLED(CONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_DUDU)
-    lv_animimg_set_src(art, (const void **)dudu_imgs, 8);
+    lv_animimg_set_src(art, (const void **)dudu_imgs, 10);
 #elif IS_ENABLED(CONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_SPACEMAN)
     lv_animimg_set_src(art, (const void **)spaceman_imgs, 20);
 #elif IS_ENABLED(CONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_POKEMON)

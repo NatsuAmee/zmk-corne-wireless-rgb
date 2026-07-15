@@ -1,4 +1,4 @@
-#include "dudu.h"
+#include "doraemon_crunch.h"
 
 const uint8_t doraemon_crunch_0_data[] = {
     /*Palette*/
