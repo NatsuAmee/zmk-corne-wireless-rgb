@@ -63,18 +63,32 @@ LV_IMG_DECLARE(cat_7);
 const lv_img_dsc_t *cat_imgs[] = {&cat_0, &cat_1, &cat_2, &cat_3, &cat_4, &cat_5, &cat_6, &cat_7};
 
 #elif IS_ENABLED(CONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_DUDU)
-LV_IMG_DECLARE(doraemon_crunch_0);
-LV_IMG_DECLARE(doraemon_crunch_1);
-LV_IMG_DECLARE(doraemon_crunch_2);
-LV_IMG_DECLARE(doraemon_crunch_3);
-LV_IMG_DECLARE(doraemon_crunch_4);
-LV_IMG_DECLARE(doraemon_crunch_5);
-LV_IMG_DECLARE(doraemon_crunch_6);
-LV_IMG_DECLARE(doraemon_crunch_7);
-LV_IMG_DECLARE(doraemon_crunch_8);
-LV_IMG_DECLARE(doraemon_crunch_9);
+LV_IMG_DECLARE(zero_two_dance_0);
+LV_IMG_DECLARE(zero_two_dance_1);
+LV_IMG_DECLARE(zero_two_dance_2);
+LV_IMG_DECLARE(zero_two_dance_3);
+LV_IMG_DECLARE(zero_two_dance_4);
+LV_IMG_DECLARE(zero_two_dance_5);
+LV_IMG_DECLARE(zero_two_dance_6);
+LV_IMG_DECLARE(zero_two_dance_7);
+LV_IMG_DECLARE(zero_two_dance_8);
+LV_IMG_DECLARE(zero_two_dance_9);
+LV_IMG_DECLARE(zero_two_dance_10);
+LV_IMG_DECLARE(zero_two_dance_11);
+LV_IMG_DECLARE(zero_two_dance_12);
+LV_IMG_DECLARE(zero_two_dance_13);
+LV_IMG_DECLARE(zero_two_dance_14);
+LV_IMG_DECLARE(zero_two_dance_15);
+LV_IMG_DECLARE(zero_two_dance_16);
+LV_IMG_DECLARE(zero_two_dance_17);
+LV_IMG_DECLARE(zero_two_dance_18);
+LV_IMG_DECLARE(zero_two_dance_19);
+LV_IMG_DECLARE(zero_two_dance_20);
+LV_IMG_DECLARE(zero_two_dance_21);
+LV_IMG_DECLARE(zero_two_dance_22);
+LV_IMG_DECLARE(zero_two_dance_23);
 
-const lv_img_dsc_t *dudu_imgs[] = {&doraemon_crunch_0, &doraemon_crunch_1, &doraemon_crunch_2, &doraemon_crunch_3, &doraemon_crunch_4, &doraemon_crunch_5, &doraemon_crunch_6, &doraemon_crunch_7, &doraemon_crunch_8, &doraemon_crunch_9};
+const lv_img_dsc_t *dudu_imgs[] = {&zero_two_dance_0, &zero_two_dance_1, &zero_two_dance_2, &zero_two_dance_3, &zero_two_dance_4, &zero_two_dance_5, &zero_two_dance_6, &zero_two_dance_7, &zero_two_dance_8, &zero_two_dance_9, &zero_two_dance_10, &zero_two_dance_11, &zero_two_dance_12, &zero_two_dance_13, &zero_two_dance_14, &zero_two_dance_15, &zero_two_dance_16, &zero_two_dance_17, &zero_two_dance_18, &zero_two_dance_19, &zero_two_dance_20, &zero_two_dance_21, &zero_two_dance_22, &zero_two_dance_23};
 
 #elif IS_ENABLED(CONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_SPACEMAN)
 
@@ -197,7 +211,7 @@ void draw_animation(lv_obj_t *canvas, struct zmk_widget_screen *widget) {
 #elif IS_ENABLED(CONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_CAT)
     lv_animimg_set_src(art, (const void **)cat_imgs, 8);
 #elif IS_ENABLED(CONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_DUDU)
-    lv_animimg_set_src(art, (const void **)dudu_imgs, 10);
+    lv_animimg_set_src(art, (const void **)dudu_imgs, 24);
 #elif IS_ENABLED(CONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_SPACEMAN)
     lv_animimg_set_src(art, (const void **)spaceman_imgs, 20);
 #elif IS_ENABLED(CONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_POKEMON)

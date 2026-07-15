@@ -1,4 +1,4 @@
-#include "dudu.h"
+#include "zero_two_dance.h"
 
 const uint8_t zero_two_dance_0_data[] = {
     /*Palette*/
